@@ -17,6 +17,11 @@ model User {
   role String @default("WAITER") // WAITER | ADMIN | CUSTOMER | etc
 
   orders Order[]
+  
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+
 }
 
 model Restaurant {
@@ -24,6 +29,7 @@ model Restaurant {
   name     String
   products Product[]
   orders   Order[]
+  waiters  User[]
 }
 
 model Product {

@@ -7,6 +7,8 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
+import { UsersController } from './controllers/users.controller';
+import { RestaurantsController } from './controllers/restaurants.controller';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     OrdersModule,
   ],
-  controllers: [],
+  controllers: [UsersController, RestaurantsController],
   providers: [
     {
       provide: APP_PIPE,
