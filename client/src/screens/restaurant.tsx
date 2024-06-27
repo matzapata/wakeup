@@ -2,9 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProductCard } from "../components/product-card";
+import { useAtomValue } from "jotai";
+import { orderItemsAtom } from "../store/order";
 
 export function RestaurantScreen() {
   const navigate = useNavigate();
+  const orderItems = useAtomValue(orderItemsAtom);
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -20,7 +23,12 @@ export function RestaurantScreen() {
         </Link>
 
         <ul>
-          <ProductCard id={"abc"} name={"Pelmeni"} price={10} />
+          <ProductCard
+            id={"abc"}
+            name={"Pelmeni"}
+            price={10}
+            quantity={orderItems["abc"]?.quantity ?? 0}
+          />
         </ul>
       </div>
     </div>

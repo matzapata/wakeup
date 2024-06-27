@@ -1,3 +1,4 @@
+import { orderItemsAtom } from "../store/order";
 import { Button } from "../components/ui/button";
 import {
   Drawer,
@@ -10,20 +11,71 @@ import {
   DrawerTrigger,
 } from "../components/ui/drawer";
 import { Minus, Plus } from "lucide-react";
+import { useSetAtom } from "jotai";
 
 export function ProductCard(props: {
   id: string;
   name: string;
   price: number;
+  quantity: number;
 }) {
+  const setOrderItems = useSetAtom(orderItemsAtom);
+
+  const incrementQuantity = () => {
+    setOrderItems((orderItems) => {
+      const item = orderItems[props.id] ?? {
+        id: props.id,
+        name: props.name,
+        price: props.price,
+        quantity: 0,
+      };
+
+      return {
+        ...orderItems,
+        [props.id]: {
+          ...item,
+          quantity: item.quantity + 1,
+        },
+      };
+    });
+  };
+
+  const decrementQuantity = () => {
+    setOrderItems((orderItems) => {
+      const item = orderItems[props.id] ?? {
+        id: props.id,
+        name: props.name,
+        price: props.price,
+        quantity: 0,
+      };
+
+      return {
+        ...orderItems,
+        [props.id]: {
+          ...item,
+          quantity: item.quantity - 1,
+        },
+      };
+    });
+  };
+
+  const removeItem = () => {
+    setOrderItems((orderItems) => {
+      const { [props.id]: _, ...rest } = orderItems;
+      return rest;
+    });
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <button className="flex w-full justify-between border-y py-4 items-center hover:bg-gray-50 px-2">
-          <span>
-            {props.name}{" "}
-            <span className="text-xs bg-gray-100 rounded-full px-3 ml-2">x2</span>
-          </span>
+          <div className="text-left space-y-1">
+            <span>{props.name}</span>
+            <span className="block text-xs rounded-full">
+              Quantity: {props.quantity || 0}
+            </span>
+          </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm">${props.price}</span>
           </div>
@@ -41,17 +93,22 @@ export function ProductCard(props: {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
+                onClick={decrementQuantity}
+                disabled={props.quantity <= 1}
               >
                 <Minus className="h-4 w-4" />
                 <span className="sr-only">Decrease</span>
               </Button>
               <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">1</div>
+                <div className="text-7xl font-bold tracking-tighter">
+                  {props.quantity ?? 0}
+                </div>
               </div>
               <Button
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 shrink-0 rounded-full"
+                onClick={incrementQuantity}
               >
                 <Plus className="h-4 w-4" />
                 <span className="sr-only">Increase</span>
@@ -59,9 +116,13 @@ export function ProductCard(props: {
             </div>
           </div>
           <DrawerFooter>
-            <Button>Ok</Button>
             <DrawerClose asChild>
-              <Button variant="outline">Remove from cart</Button>
+              <Button>Ok</Button>
+            </DrawerClose>
+            <DrawerClose asChild>
+              <Button onClick={removeItem} variant="outline">
+                Remove from cart
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </div>
