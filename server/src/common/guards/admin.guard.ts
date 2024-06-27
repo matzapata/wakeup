@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
     const ADMIN_SECRET = this.configService.getOrThrow<string>('ADMIN_SECRET');
-    const adminSecretHeader = req.headers['admin-secret'];
+    const adminSecretHeader = req.headers['x-admin-secret'];
 
     if (!adminSecretHeader || adminSecretHeader !== ADMIN_SECRET) {
       throw new UnauthorizedException('Invalid or missing Admin-Secret header');

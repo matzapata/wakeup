@@ -6,15 +6,15 @@ import {
   IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Product } from '@prisma/client';
+import { OrderItem } from '@prisma/client';
 
 class ItemDto {
   @IsString()
-  productId: Product['id'];
+  productId: OrderItem['productId'];
 
   @IsInt()
   @IsPositive()
-  quantity: number;
+  quantity: OrderItem['quantity'];
 }
 
 export class CreateOrderDto {

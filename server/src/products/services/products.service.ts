@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ProductsRepository } from '../repositories/products.repository';
 import { Product } from '@prisma/client';
 
@@ -11,6 +11,10 @@ export class ProductsService {
     name: Product['name'],
     price: Product['price'],
   ): Promise<Product> {
+    if (price <= 0) {
+      throw new BadRequestException('Price should be above 0');
+    }
+
     return this.productsRepository.create(restaurantId, name, price);
   }
 

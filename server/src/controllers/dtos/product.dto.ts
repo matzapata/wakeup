@@ -1,12 +1,31 @@
-import { Expose } from 'class-transformer';
+import { Product } from '@prisma/client';
+import { Expose, Type } from 'class-transformer';
 
 export class ProductDto {
   @Expose()
-  id: string;
+  id: Product['id'];
 
   @Expose()
-  name: string;
+  name: Product['name'];
 
   @Expose()
-  price: number;
+  price: Product['price'];
+}
+
+export class PaginatedProductsDto {
+  @Expose()
+  @Type(() => ProductDto)
+  products: ProductDto[];
+
+  @Expose()
+  count: number;
+
+  @Expose()
+  page: number;
+
+  @Expose()
+  pageSize: number;
+
+  @Expose()
+  totalPages: number;
 }
