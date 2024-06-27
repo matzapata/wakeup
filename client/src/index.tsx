@@ -6,11 +6,22 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { RestaurantListingScreen } from './screens/restaurant-listing';
+import { OrderScreen } from './screens/order';
+import { RestaurantScreen } from './screens/restaurant';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <RestaurantListingScreen />,
+  },
+  {
+    path: "/restaurants/:restaurantId",
+    element: <RestaurantScreen />,
+  },
+  {
+    path: "/restaurants/:restaurantId/order",
+    element: <OrderScreen />,
   },
 ]);
 
