@@ -1,6 +1,7 @@
 import { TestBed } from '@automock/jest';
 import { RestaurantsService } from './restaurants.service';
 import { RestaurantsRepository } from '../repositories/restaurants.respository';
+import { Restaurant } from '@prisma/client';
 
 describe('RestaurantsService', () => {
   let service: RestaurantsService;
@@ -13,8 +14,15 @@ describe('RestaurantsService', () => {
     repository = unitRef.get(RestaurantsRepository);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('create should create a restaurant in db and return it', () => {
-    repository.create.mockResolvedValue({ id: '1', name: 'restaurant' });
+    repository.create.mockResolvedValue({
+      id: '1',
+      name: 'restaurant',
+    } as Restaurant);
 
     expect(service.create('restaurant')).resolves.toEqual({
       id: '1',
@@ -24,7 +32,10 @@ describe('RestaurantsService', () => {
   });
 
   it('getById should return a restaurant from db', () => {
-    repository.getById.mockResolvedValue({ id: '1', name: 'restaurant' });
+    repository.getById.mockResolvedValue({
+      id: '1',
+      name: 'restaurant',
+    } as Restaurant);
 
     expect(service.getById('1')).resolves.toEqual({
       id: '1',
@@ -37,7 +48,7 @@ describe('RestaurantsService', () => {
     repository.getPaginated.mockResolvedValue([
       { id: '1', name: 'restaurant1' },
       { id: '2', name: 'restaurant2' },
-    ]);
+    ] as Restaurant[]);
     repository.count.mockResolvedValue(2);
 
     const res = await service.getPaginated(1, 2);

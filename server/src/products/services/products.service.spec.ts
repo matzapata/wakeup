@@ -5,6 +5,22 @@ import { ProductsRepository } from '../repositories/products.repository';
 describe('ProductsService', () => {
   let service: ProductsService;
   let repository: jest.Mocked<ProductsRepository>;
+  const fakeProduct1 = {
+    id: '1',
+    name: 'product1',
+    price: 10,
+    restaurantId: '1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  const fakeProduct2 = {
+    id: '2',
+    name: 'product2',
+    price: 20,
+    restaurantId: '1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   beforeAll(() => {
     const { unit, unitRef } = TestBed.create(ProductsService).compile();
@@ -13,53 +29,31 @@ describe('ProductsService', () => {
     repository = unitRef.get(ProductsRepository);
   });
 
-  it('create should create a product and associate it with the restaurant', () => {
-    repository.create.mockResolvedValue({
-      id: '1',
-      name: 'product',
-      price: 10,
-      restaurantId: '1',
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    expect(service.create('1', 'product', 10)).resolves.toEqual({
-      id: '1',
-      name: 'product',
-      price: 10,
-      restaurantId: '1',
-    });
+  it('create should create a product and associate it with the restaurant', () => {
+    repository.create.mockResolvedValue(fakeProduct1);
+
+    expect(service.create('1', 'product', 10)).resolves.toEqual(fakeProduct1);
     expect(repository.create).toHaveBeenCalledWith('1', 'product', 10);
   });
 
   it('getById should return a restaurant from db', () => {
-    repository.getById.mockResolvedValue({
-      id: '1',
-      name: 'product',
-      price: 10,
-      restaurantId: '1',
-    });
+    repository.getById.mockResolvedValue(fakeProduct1);
 
-    expect(service.getById('1')).resolves.toEqual({
-      id: '1',
-      name: 'product',
-      price: 10,
-      restaurantId: '1',
-    });
+    expect(service.getById('1')).resolves.toEqual(fakeProduct1);
     expect(repository.getById).toHaveBeenCalledWith('1');
   });
 
   it('getPaginated should return a list of products from db with pagination metadata', async () => {
-    repository.getPaginated.mockResolvedValue([
-      { id: '1', name: 'product1', price: 10, restaurantId: '1' },
-      { id: '2', name: 'product2', price: 20, restaurantId: '1' },
-    ]);
+    repository.getPaginated.mockResolvedValue([fakeProduct1, fakeProduct2]);
     repository.count.mockResolvedValue(2);
 
     const res = await service.getPaginated('1', 1, 2);
     expect(res).toEqual({
-      products: [
-        { id: '1', name: 'product1', price: 10, restaurantId: '1' },
-        { id: '2', name: 'product2', price: 20, restaurantId: '1' },
-      ],
+      products: [fakeProduct1, fakeProduct2],
       count: 2,
       page: 1,
       pageSize: 2,

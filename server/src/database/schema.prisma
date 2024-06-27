@@ -10,47 +10,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    String @id @default(cuid())
-  email String @unique
-
-  role String @default("WAITER") // WAITER | ADMIN | CUSTOMER | etc
-
-  orders Order[]
-  
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-
-
-}
-
 model Restaurant {
-  id       String    @id @default(cuid())
-  name     String
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   products Product[]
   orders   Order[]
-  waiters  User[]
 }
 
 model Product {
-  id    String @id @default(cuid())
-  name  String
-  price Float
+  id        String   @id @default(cuid())
+  name      String
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-
-  orders Order[]
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
 }
 
 model Order {
-  id String @id @default(cuid())
+  id         Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
+  items        OrderItem[]
   restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+}
 
-  products Product[]
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  unitPrice  Float
+  totalPrice Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
 }

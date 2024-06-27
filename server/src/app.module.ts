@@ -4,10 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { APP_PIPE } from '@nestjs/core';
 import { RestaurantsModule } from './restaurants/restaurants.module';
-import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
-import { UsersController } from './controllers/users.controller';
 import { RestaurantsController } from './controllers/restaurants.controller';
 
 @Module({
@@ -18,14 +16,14 @@ import { RestaurantsController } from './controllers/restaurants.controller';
       envFilePath: '.env',
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        ADMIN_SECRET: Joi.string().required(),
       }),
     }),
     RestaurantsModule,
-    UsersModule,
     ProductsModule,
     OrdersModule,
   ],
-  controllers: [UsersController, RestaurantsController],
+  controllers: [RestaurantsController],
   providers: [
     {
       provide: APP_PIPE,
