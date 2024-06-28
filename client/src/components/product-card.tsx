@@ -69,7 +69,7 @@ export function ProductCard(props: {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="flex w-full justify-between border-y py-4 items-center hover:bg-gray-50 px-2">
+        <button className="flex w-full justify-between py-4 items-center hover:bg-gray-50 px-2">
           <div className="text-left space-y-1">
             <span>{props.name}</span>
             <span className="block text-xs rounded-full">

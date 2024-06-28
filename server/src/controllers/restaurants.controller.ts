@@ -37,10 +37,13 @@ export class RestaurantsController {
   @Get()
   @Serialize(PaginatedRestaurantsDto)
   getPaginated(
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 10,
+    @Query('page') page: string = '1',
+    @Query('pageSize') pageSize: string = '10',
   ) {
-    return this.restaurantsService.getPaginated(page, pageSize);
+    return this.restaurantsService.getPaginated(
+      parseInt(page, 10),
+      parseInt(pageSize, 10),
+    );
   }
 
   @Get(':id')
@@ -60,10 +63,14 @@ export class RestaurantsController {
   @Serialize(PaginatedProductsDto)
   getProducts(
     @Param('id') restaurantId: string,
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 10,
+    @Query('page') page: string = '1',
+    @Query('pageSize') pageSize: string = '10',
   ) {
-    return this.productsService.getPaginated(restaurantId, page, pageSize);
+    return this.productsService.getPaginated(
+      restaurantId,
+      parseInt(page, 10),
+      parseInt(pageSize, 10),
+    );
   }
 
   @Get(':id/products/:productId')
