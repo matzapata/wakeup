@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { RestaurantCard } from "../components/restaurant-card";
 import { serverApi } from "../services/server";
 import { useMemo } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { InfiniteScroll } from "../components/infinite-scroll";
 
 export function RestaurantListingScreen() {
   const { data, error, fetchNextPage, status, hasNextPage } = useInfiniteQuery({
@@ -29,12 +29,7 @@ export function RestaurantListingScreen() {
         </h1>
       </div>
 
-      <InfiniteScroll
-        dataLength={restaurants.length}
-        next={() => fetchNextPage()}
-        hasMore={!!hasNextPage}
-        loader={<span className="py-4">Loading...</span>}
-      >
+      <InfiniteScroll next={() => fetchNextPage()} hasMore={!!hasNextPage}>
         <ul className="divide-y border-y">
           {restaurants.map((restaurant) => (
             <RestaurantCard
@@ -45,8 +40,10 @@ export function RestaurantListingScreen() {
           ))}
         </ul>
       </InfiniteScroll>
-
-      {status === "error" && <div>Error: {error.message}</div>}
+      <div className="py-4">
+        {status === "pending" && <span>Loading...</span>}
+        {status === "error" && <span>Error: {error.message}</span>}
+      </div>
     </div>
   );
 }

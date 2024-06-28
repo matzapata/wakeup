@@ -7,7 +7,7 @@ import { orderItemsAtom } from "../store/order";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { RestaurantDto, serverApi } from "../services/server";
 import { useMemo } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { InfiniteScroll } from "../components/infinite-scroll";
 
 interface LoaderData {
   restaurant: RestaurantDto;
@@ -43,12 +43,16 @@ export function RestaurantScreen() {
 
   const navigateBack = () => {
     if (Object.keys(orderItems).length === 0) {
-      navigate(-1)
-    }else  if (window.confirm("You're exiting the restaurant, your ongoing order will be lost")) {
-      setOrderItems({})
-      navigate(-1)
+      navigate(-1);
+    } else if (
+      window.confirm(
+        "You're exiting the restaurant, your ongoing order will be lost"
+      )
+    ) {
+      setOrderItems({});
+      navigate(-1);
     }
-  }
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -57,25 +61,19 @@ export function RestaurantScreen() {
           <h1 className="font-bold text-medium text-center">
             {restaurant.name}
           </h1>
-          <button
-            onClick={navigateBack}
-            className="absolute left-0 top-6"
-          >
+          <button onClick={navigateBack} className="absolute left-0 top-6">
             <ArrowLeft />
           </button>
         </div>
         <Link to={`/restaurants/${restaurant.id}/order`}>
-          <Button className="w-full">Go to cart ({Object.keys(orderItems).length})</Button>
+          <Button className="w-full">
+            Go to cart ({Object.keys(orderItems).length})
+          </Button>
         </Link>
       </div>
 
       <div className="space-y-6 mt-4 md:mt-6">
-        <InfiniteScroll
-          dataLength={products.length}
-          next={() => fetchNextPage()}
-          hasMore={!!hasNextPage}
-          loader={<span className="py-4">Loading...</span>}
-        >
+        <InfiniteScroll next={() => fetchNextPage()} hasMore={!!hasNextPage}>
           <ul className="divide-y border-y">
             {products.map((product) => (
               <ProductCard
@@ -89,7 +87,10 @@ export function RestaurantScreen() {
           </ul>
         </InfiniteScroll>
 
-        {status === "error" && <div>Error: {error.message}</div>}
+        <div className="py-4">
+          {status === "pending" && <span>Loading...</span>}
+          {status === "error" && <span>Error: {error.message}</span>}
+        </div>
       </div>
     </div>
   );

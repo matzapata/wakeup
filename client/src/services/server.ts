@@ -42,7 +42,7 @@ class ServerApi {
     }
 
     async getRestaurants(page: number = 1, pageSize: number = 10): Promise<PaginatedRestaurantsDto> {
-        // await new Promise((resolve) => setTimeout(resolve, 1000)) to showcase infinite scrolling
+        // await new Promise((resolve) => setTimeout(resolve, 1000)) // to showcase infinite scrolling
         const response = await this.api.get(`/restaurants?page=${page}&pageSize=${pageSize}`);
         return response.data;
     }
