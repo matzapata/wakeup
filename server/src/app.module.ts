@@ -13,9 +13,10 @@ import { RestaurantsController } from './controllers/restaurants.controller';
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: '.env.local',
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
+        DATABASE_URL_NON_POOLING: Joi.string().required(),
         ADMIN_SECRET: Joi.string().required(),
       }),
     }),

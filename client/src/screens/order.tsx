@@ -80,15 +80,19 @@ export function OrderScreen() {
           <Button
             onClick={createOrder}
             className="w-full"
-            disabled={orderItemsArray.length === 0}
+            disabled={
+              orderItemsArray.length === 0 || createOrderMutation.isPending
+            }
           >
-            Create order
+            {createOrderMutation.isPending ? "Loading..." : "Create order"}
           </Button>
           <Button
             onClick={clearOrder}
             className="w-full"
             variant={"outline"}
-            disabled={orderItemsArray.length === 0}
+            disabled={
+              orderItemsArray.length === 0 || createOrderMutation.isPending
+            }
           >
             Delete order
           </Button>
