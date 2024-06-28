@@ -1,6 +1,16 @@
 
 # Wakeup
 
+Run with docker compose:
+1. Run `docker compose up`
+2. When postgres service is stable go inside server set `.env` to:
+```
+DATABASE_URL="postgres://postgres:password@localhost:5432/mydatabase"
+DATABASE_URL_NON_POOLING="postgres://postgres:password@localhost:5432/mydatabase"
+```
+3. Run `npx prisma:push` and `npm run prisma:seed`
+4. Ready. Go to `localhost:3000`
+
 How to run the server:
 1. Replace `.env.example` for `.env` and fill up values. 
 2. `npm install` by default will generate prisma client through postinstall
@@ -13,6 +23,7 @@ Run  server tests:
 How to run the client:
 1. Replace `.env.local.example` for `.env.local` and fill up values. 
 2. `npm install` to setup dependencies followed by `npm run start`
+4. Ready. Go to `localhost:3000`
 
 
 Some notes:

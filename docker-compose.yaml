@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+
+  server:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.dev
+    environment:
+      - PORT=4000
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/mydatabase
+      - DATABASE_URL_NON_POOLING=postgres://postgres:password@postgres:5432/mydatabase
+      - ADMIN_SECRET=supersecret
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - REACT_APP_SERVER_URL=http://localhost:4000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - server
+  
