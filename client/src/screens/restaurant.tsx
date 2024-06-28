@@ -2,7 +2,7 @@ import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProductCard } from "../components/product-card";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { orderItemsAtom } from "../store/order";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { RestaurantDto, serverApi } from "../services/server";

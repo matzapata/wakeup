@@ -69,16 +69,19 @@ export function ProductCard(props: {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="flex w-full justify-between py-4 items-center hover:bg-gray-50 px-2">
+        <button className="flex w-full justify-between py-4 hover:bg-gray-50 px-2">
           <div className="text-left space-y-1">
             <span>{props.name}</span>
-            <span className="block text-xs rounded-full">
-              Quantity: {props.quantity || 0}
-            </span>
+            <div>
+              <span className="text-xs">Quantity: {props.quantity || 0}</span>
+              {props.quantity ? (
+                <span className="text-xs ml-1">
+                  - Subtotal: {props.quantity * props.price}
+                </span>
+              ) : null}
+            </div>
           </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm">${props.price}</span>
-          </div>
+          <span className="text-sm py-1">${props.price}</span>
         </button>
       </DrawerTrigger>
       <DrawerContent>

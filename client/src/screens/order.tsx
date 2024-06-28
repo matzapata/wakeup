@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProductCard } from "../components/product-card";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { orderItemsAtom, orderTotalAtom } from "../store/order";
 import { serverApi } from "../services/server";
 import { useMutation } from "@tanstack/react-query";
@@ -10,8 +10,7 @@ import { toast } from "sonner";
 
 export function OrderScreen() {
   const navigate = useNavigate();
-  const orderItems = useAtomValue(orderItemsAtom);
-  const setOrderItems = useSetAtom(orderItemsAtom);
+  const [orderItems, setOrderItems] = useAtom(orderItemsAtom);
   const orderTotal = useAtomValue(orderTotalAtom);
   const orderItemsArray = Object.values(orderItems);
   const { restaurantId } = useParams();
